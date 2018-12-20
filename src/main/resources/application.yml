@@ -4,3 +4,12 @@ management:
       exposure:
         include: "*"
 
+spring:
+  cloud:
+    gateway:
+      routes:
+      - predicates:
+        - Path=/props/**
+        filters:
+        - StripPrefix=1
+        uri: "http://httpbin.org"
