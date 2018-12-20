@@ -1,0 +1,10 @@
+applications:
+- name: gateway-demo
+  path: build/libs/gateway-route-service-0.0.1-SNAPSHOT.jar
+  disk_quota: 1G
+  instances: 1
+  memory: 1G
+  random-routes: true
+  stack: cflinuxfs2
+  services:
+  - gateway-config
