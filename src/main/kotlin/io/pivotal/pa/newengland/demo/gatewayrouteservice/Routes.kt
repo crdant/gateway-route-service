@@ -18,5 +18,12 @@ class KotlinRoutes {
                     filters { stripPrefix(1) }
                     uri("http://httpbin.org")
                 }
+                route {
+                    path("/hiya")
+                    uri( "lb://hello")
+                    filters {
+                        setPath("/greeting/english")
+                    }
+                }
             }
 }
