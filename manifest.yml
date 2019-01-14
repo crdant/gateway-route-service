@@ -1,10 +1,11 @@
 applications:
-- name: gateway-demo
+- name: api
   path: build/libs/gateway-route-service-0.0.1-SNAPSHOT.jar
   disk_quota: 1G
   instances: 1
   memory: 1G
-  random-routes: true
-  stack: cflinuxfs2
+  random-route: true
+  stack: cflinuxfs3
   services:
   - gateway-config
+  - service-registry
