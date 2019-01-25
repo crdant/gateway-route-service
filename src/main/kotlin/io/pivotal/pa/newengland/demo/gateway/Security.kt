@@ -1,4 +1,4 @@
-package io.pivotal.pa.newengland.demo.reactiveworldlyhello
+package io.pivotal.pa.newengland.demo.gateway
 
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.web.server.ServerHttpSecurity
