@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.runApplication
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 
-@SpringBootApplication(exclude = [ SecurityAutoConfiguration::class ] )
+@SpringBootApplication
 @EnableDiscoveryClient
 
 class GatewayRouteService
