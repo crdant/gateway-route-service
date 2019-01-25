@@ -1,4 +1,4 @@
-package io.pivotal.pa.newengland.demo.gatewayrouteservice
+package io.pivotal.pa.newengland.demo.gateway
 
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
