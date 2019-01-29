@@ -30,9 +30,9 @@ class KotlinRoutes {
                     path("/portuguese")
                     uri( "lb://greeter")
                     filters {
-                        setPath("/greeting/portuguese")
-                        tokenRelay.apply()
+                        setPath("/greeting/portuguese").filter(tokenRelay.apply())
                     }
                 }
             }
 }
+
