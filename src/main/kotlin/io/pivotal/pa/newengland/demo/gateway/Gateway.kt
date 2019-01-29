@@ -7,9 +7,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 @SpringBootApplication
 @EnableDiscoveryClient
 
-class GatewayRouteService
+class Gateway
 
 fun main(args: Array<String>) {
-	runApplication<GatewayRouteService>(*args)
+	runApplication<Gateway>(*args)
 }
 
