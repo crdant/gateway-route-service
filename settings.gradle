@@ -1,1 +1,3 @@
-rootProject.name = 'gateway-route-service'
+rootProject.name = 'spring-cloud-gateway-demo'
+
+include 'api-gateway'
