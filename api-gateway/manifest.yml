@@ -7,5 +7,6 @@ applications:
   random-route: true
   stack: cflinuxfs3
   services:
-  - gateway-config
+  - config-server
   - service-registry
+  - single-signon
