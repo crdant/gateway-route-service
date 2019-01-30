@@ -1,0 +1,20 @@
+defaultLanguage: english
+
+server:
+  port : 9090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  data:
+    mongodb:
+      port: 0
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://dev-708894.oktapreview.com/oauth2/default/v1/keys
