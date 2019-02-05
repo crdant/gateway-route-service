@@ -1,13 +1,24 @@
+server:
+  port: 9443
+  ssl:
+    key-store: /usr/local/etc/certbot/live/local.crdant.io/certificate.p12
+    keyStoreType: PKCS12
+    keyAlias: local
+    key-store-password: numb-avaunt-barbados-pelt
+
 spring:
   application:
     name: greeter
   cloud:
     config:
-      uri: http://localhost:8888
+      uri: https://config.local.crdant.io:8883
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: https://discovery.local.crdant.io:8763/eureka
   instance:
-    hostname: localhost
+    hostname: greeter.local.crdant.io
+    secure-port: ${server.port}
+    secure-port-enabled: true
+    non-secure-port-enabled: false

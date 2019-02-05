@@ -3,9 +3,22 @@ spring:
     name: gateway
   cloud:
     config:
-      uri: http://localhost:8888
-    gateway:
-      discovery:
-        locator:
-          lower-case-service-id: true
-          enabled: true
+      uri: https://config.local.crdant.io:8883
+
+server:
+  port: 8443
+  ssl:
+    key-store: /usr/local/etc/certbot/live/local.crdant.io/certificate.p12
+    keyStoreType: PKCS12
+    keyAlias: local
+    key-store-password: numb-avaunt-barbados-pelt
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://discovery.local.crdant.io:8763/eureka
+  instance:
+    hostname: gateway.local.crdant.io
+    secure-port: ${server.port}
+    secure-port-enabled: true
+    non-secure-port-enabled: false

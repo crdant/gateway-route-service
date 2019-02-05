@@ -7,3 +7,22 @@ management:
 logging:
   level:
     org.springframework.cloud.gateway: TRACE
+
+spring:
+  autoconfigure:
+    # TODO: remove when fixed https://github.com/spring-projects/spring-security/issues/6314
+     exclude: org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
+  security:
+    oauth2:
+      client:
+        provider:
+          uaa:
+            issuer-uri: https://uaa.local.crdant.io:8443/oauth/token
+            jwk-set-uri: https://uaa.local.crdant.io:8443/token_keys
+        registration:
+          uaa:
+            client-id: gateway
+            client-secret: grapheme-evoke-moonbeam-manque
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile,email,greeter.greet

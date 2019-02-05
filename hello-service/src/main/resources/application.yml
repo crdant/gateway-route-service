@@ -1,8 +1,5 @@
 defaultLanguage: english
 
-server:
-  port : 9090
-
 management:
   endpoints:
     web:
@@ -17,4 +14,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://dev-708894.oktapreview.com/oauth2/default/v1/keys
+          jwk-set-uri: https://uaa.local.crdant.io:8443/token_keys
