@@ -1,0 +1,14 @@
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+server:
+  port: 8763
+  ssl:
+    key-store: /usr/local/etc/certbot/live/local.crdant.io/certificate.p12
+    keyStoreType: PKCS12
+    keyAlias: local
+    key-store-password: numb-avaunt-barbados-pelt

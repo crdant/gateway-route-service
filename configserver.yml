@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/crdant/spring-cloud-gateway-demo/config
+          searchPaths: config/{application}/{profile}
+
+#
+# -c '{"git": { "uri": "https://github.com/crdant/gateway-routes", "searchPaths": "config", label": "v1.1" } }'
+#
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+server:
+  port: 8883
+  ssl:
+    key-store: /usr/local/etc/certbot/live/local.crdant.io/certificate.p12
+    keyStoreType: PKCS12
+    keyAlias: local
+    key-store-password: numb-avaunt-barbados-pelt
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://discovery.local.crdant.io:8763/eureka
+  instance:
+    hostname: config.local.crdant.io
+    secure-port: ${server.port}
+    secure-port-enabled: true
+    non-secure-port-enabled: false

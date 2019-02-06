@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: english
+        predicates:
+        - Path=/english
+        uri: lb://greeter
+        filters:
+        - SetPath=/greeting/english
+        - SecureHeaders=
+        - TokenRelay=
+      - id: spanish
+        predicates:
+        - Path=/spanish
+        uri: lb://greeter
+        filters:
+        - SetPath=/greeting/spanish
+        - SecureHeaders=
+        - TokenRelay=
+      - id: french
+        predicates:
+        - Path=/french
+        uri: lb://greeter
+        filters:
+        - SetPath=/greeting/french
+        - SecureHeaders=
+        - TokenRelay=
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: true
+          filters:
+          - RewritePath="/.*?/(?<path>.*)","/$\{path}"
+          - TokenRelay=
+          - SecureHeaders=
