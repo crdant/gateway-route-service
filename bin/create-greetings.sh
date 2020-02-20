@@ -13,12 +13,10 @@ url=$1
 
 
 
-curl -i -X POST -H "Content-Type:application/json" -d "{ \"id\": 1, \"language\" : \"english\", \"text\" : \"Hello\" }" $url/greetings
+curl -s -X POST -H "Content-Type:application/json" -d "{ \"id\": 2, \"language\" : \"spanish\", \"text\" : \"Hola\" }" $url/greetings | jq .
 
-curl -i -X POST -H "Content-Type:application/json" -d "{ \"id\": 2, \"language\" : \"spanish\", \"text\" : \"Hola\" }" $url/greetings
+curl -s -X POST -H "Content-Type:application/json" -d "{ \"id\": 3, \"language\" : \"french\", \"text\" : \"Bonjour\" }" $url/greetings | jq .
 
-curl -i -X POST -H "Content-Type:application/json" -d "{ \"id\": 3, \"language\" : \"french\", \"text\" : \"Bonjour\" }" $url/greetings
+curl -s -X POST -H "Content-Type:application/json" -d "{ \"id\": 4, \"language\" : \"esperanto\", \"text\" : \"Saluton\" }" $url/greetings | jq .
 
-curl -i -X POST -H "Content-Type:application/json" -d "{ \"id\": 4, \"language\" : \"esperanto\", \"text\" : \"Saluton\" }" $url/greetings
-
-curl -i -X POST -H "Content-Type:application/json" -d "{ \"id\": 5, \"language\" : \"portuguese\", \"text\" : \"Ola\" }" $url/greetings
+curl -s -X POST -H "Content-Type:application/json" -d "{ \"id\": 5, \"language\" : \"portuguese\", \"text\" : \"Ola\" }" $url/greetings | jq .
