@@ -17,8 +17,8 @@ spring:
       client:
         provider:
           uaa:
-            issuer-uri: https://uaa.local.crdant.io:8443/oauth/token
-            jwk-set-uri: https://uaa.local.crdant.io:8443/token_keys
+            issuer-uri: https://uaa.local.crdant.io:9443/uaa/oauth/token
+            jwk-set-uri: https://uaa.local.crdant.io:9443/uaa/token_keys
         registration:
           uaa:
             client-id: gateway
