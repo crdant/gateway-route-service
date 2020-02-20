@@ -14,4 +14,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://uaa.local.crdant.io:8443/token_keys
+          jwk-set-uri: https://uaa.local.crdant.io:9443/uaa/token_keys
