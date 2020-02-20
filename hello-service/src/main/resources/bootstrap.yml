@@ -1,5 +1,5 @@
 server:
-  port: 9443
+  port: 7443
   ssl:
     key-store: /usr/local/etc/certbot/live/local.crdant.io/certificate.p12
     keyStoreType: PKCS12
