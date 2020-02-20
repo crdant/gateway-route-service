@@ -31,6 +31,7 @@ but it's fairly straightforard. Drop in [my updated `build.gradle`](https://gist
 to get it started. You'll needs to update the hostname and
 can if you want a port other than `9443` you can update that.
 
+
 1. In the root directory of this project, run local versions
 of the Eureka and Config Server services using the 
 [Spring Cloud CLI](https://cloud.spring.io/spring-cloud-cli/reference/html/).
@@ -39,11 +40,61 @@ of the Eureka and Config Server services using the
 $ spring cloud eureka configserver
 ```
 
+The terminal will display the expected Spring Boot logging
+information until you terminate the servers.
+
 3. Start the gateway application and supporting Hello World
 service.
 
+in one terminal:
+
 ```shell
-$ ./gradlew bootRun
+$ cd hello-service
+$ ../gradlew bootRun
+```
+
+in another terminal:
+
+```shell
+$ cd api-gateway
+$ ../gradlew bootRun
+```
+
+Both terminals will show the Spring Boot logging output
+until you terminate each one.
+
+4. Load the test data in a third terminal:
+
+```shell
+$ create-greeting.sh https://greeter.local.crdant.io:7443
+
+  {
+    "id": 2,
+    "language": "spanish",
+    "text": "Hola"
+  }
+]
+[
+  {
+    "id": 3,
+    "language": "french",
+    "text": "Bonjour"
+  }
+]
+[
+  {
+    "id": 4,
+    "language": "esperanto",
+    "text": "Saluton"
+  }
+]
+[
+  {
+    "id": 5,
+    "language": "portuguese",
+    "text": "Ola"
+  }
+]
 ```
 
 ### Run on Pivotal Web Services
