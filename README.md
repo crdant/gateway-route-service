@@ -25,6 +25,14 @@ an Internet connection. It also uses TLS for all connections,
 which means you'll need certificates for the various service
 endpoints. See [TLS](#TLS)
 
+I'm assuming you're on a Mac and have already install a 
+JDK and Homebrew.
+
+1. If you're using `direnv` run `direnv allow`, otherwise 
+source the `.envrc` file. This will add the `bin` subdirectory
+to your path so you can run some convenience commands.
+
+1. Install dependencies with `brew bundle`
 1. Run a local [UAA](https://github.com/cloudfoundry/uaa) server
 with TLS. The default getting started instructions don't use TLS,
 but it's fairly straightforard. Drop in [my updated `build.gradle`](https://gist.github.com/crdant/788fef3c59aba5544145321fbea811ed)
