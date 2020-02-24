@@ -257,12 +257,6 @@ $ create-greeting.sh https://greeter.local.crdant.io:7443
 Gateway and it will prompt you to log in, then forward your traffic to the Greeter
 service.
 
-### Run on Pivotal Web Services
-
-
-### Run on your own Pivotal Application Service foundation
-
-
 ## TLS
 
 I use [Let's Encrypt](https://letsencrypt.org) and a wildcard
