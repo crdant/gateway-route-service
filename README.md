@@ -2,8 +2,6 @@
 
 A micro-services demonstration using Spring Cloud Gateway.
 
-## Architecture
-
 ## Build
 
 The code is set up as a series of Gradle modules, so it can 
