@@ -255,6 +255,13 @@ $ create-greeting.sh https://greeter.local.crdant.io:7443
 Gateway and it will prompt you to log in, then forward your traffic to the Greeter
 service.
 
+### Running on Pivotal Application Service
+
+I've created the manifests to deploy the Microservices and a couple of scripts to 
+simplify creating the supporting infrastructure. You'll need to use your own PCF 
+foundation in order to access Pivotal Single Sign-On, since it's not available on
+Pivotal Web Services. More detail instructions to follow.
+
 ## TLS
 
 I use [Let's Encrypt](https://letsencrypt.org) and a wildcard
