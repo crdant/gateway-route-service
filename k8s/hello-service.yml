@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: hello
+  name: hello
+  namespace: gateway-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: hello
+  template:
+    metadata:
+      labels:
+        run: hello
+    spec:
+      containers:
+      - image: crdant/worldly-hello
+        imagePullPolicy: Always
+        name: hello
+        ports:
+        - containerPort: 8443
+          protocol: TCP
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+  namespace: gateway-demo
+spec:
+  ports:
+  - port: 8443
+    protocol: TCP
+    targetPort: 8443
+  selector:
+    run: hello
+  type: ClusterIP
