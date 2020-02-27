@@ -2,12 +2,17 @@ buildscript {
 	ext {
 		kotlinVersion = '1.2.71'
 		springBootVersion = '2.1.2.RELEASE'
+    jibVersion = '1.8.0'
 	}
 	repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
 		mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath("com.google.cloud.tools.jib:com.google.cloud.tools.jib.gradle.plugin:${jibVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 	}
@@ -17,6 +22,7 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.google.cloud.tools.jib'
 
 group = 'io.pivotal.pa.newengland.demo'
 version = '0.0.1-SNAPSHOT'
@@ -73,4 +79,8 @@ compileTestKotlin {
 		freeCompilerArgs = ['-Xjsr305=strict']
 		jvmTarget = '1.8'
 	}
+}
+
+jib {
+  to.image = 'crdant/worldly-hello'
 }
