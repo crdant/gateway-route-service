@@ -19,7 +19,7 @@ spec:
       - image: crdant/greeting-api-gateway
         name: gateway
         ports:
-        - containerPort: 8443
+        - containerPort: 8080
           protocol: TCP
 ---
 apiVersion: v1
@@ -29,9 +29,30 @@ metadata:
   namespace: gateway-demo
 spec:
   ports:
-  - port: 8443
+  - port: 80
     protocol: TCP
-    targetPort: 8443
+    targetPort: 8080
   selector:
     run: gateway
   type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  namespace: gateway-demo
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  tls:
+  - hosts:
+    - gateway.minikube.crdant.io
+    secretName: gateway-tls
+  rules:
+  - host: gateway.minikube.crdant.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gateway
+          servicePort: 80

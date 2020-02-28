@@ -20,7 +20,7 @@ spec:
         imagePullPolicy: Always
         name: hello
         ports:
-        - containerPort: 8443
+        - containerPort: 8080
           protocol: TCP
         resources: {}
 ---
@@ -31,9 +31,30 @@ metadata:
   namespace: gateway-demo
 spec:
   ports:
-  - port: 8443
+  - port: 80
     protocol: TCP
-    targetPort: 8443
+    targetPort: 8080
   selector:
     run: hello
   type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello
+  namespace: gateway-demo
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  tls:
+  - hosts:
+    - greeter.minikube.crdant.io
+    secretName: hello-tls
+  rules:
+  - host: greeter.minikube.crdant.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hello
+          servicePort: 80
