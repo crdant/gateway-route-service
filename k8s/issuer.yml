@@ -1,0 +1,35 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: local-cert-issuer
+  namespace: gateway-demo
+spec:
+  ca:
+    secretName: ca-key-pair
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+ name: letsencrypt
+ namespace: gateway-demo
+spec:
+ acme:
+   # The ACME server URL
+   server: https://acme-v02.api.letsencrypt.org/directory
+   # Email address used for ACME registration
+   email: cdantonio@vmware.com
+   # Name of a secret used to store the ACME account private key
+   privateKeySecretRef:
+     name: letsencrypt-staging-credentials
+   # Enable the HTTP-01 challenge provider
+   solvers:
+   - selector: 
+      dnsZones:
+      - 'minikube.crdant.io'
+     dns01:
+       clouddns:
+         project: crdant-net
+         serviceAccountSecretRef:
+           name: gcp-dns-credentials
+           key: service_account.json
