@@ -13,7 +13,7 @@ metadata:
 data:
   uaa.yml: |
     issuer:
-      uri: http://localhost:8080/uaa
+      uri: https://uaa.minikube.crdant.io/uaa
     encryption:
       active_key_label: CHANGE-THIS-KEY
       encryption_keys:
