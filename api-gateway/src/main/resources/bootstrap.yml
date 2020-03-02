@@ -3,11 +3,12 @@ spring:
     name: gateway
   cloud:
     config:
-      uri: https://config.local.crdant.io:8883
+      uri: http://config.local.crdant.io:8883
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: https://discovery.local.crdant.io:8763/eureka
+      defaultZone: http://eureka.gateway-demo.svc/eureka
   instance:
-    hostname: gateway.minikube.crdant.io
+    hostname: gateway.gateway-demo.svc
+    nonSecurePort: 80

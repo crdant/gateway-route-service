@@ -2,59 +2,54 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: hello
-  name: hello
+    run: eureka
+  name: eureka
   namespace: gateway-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: hello
+      run: eureka
   template:
     metadata:
       labels:
-        run: hello
+        run: eureka
     spec:
       containers:
-      - image: crdant/worldly-hello
-        imagePullPolicy: Always
-        name: hello
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-        resources: {}
+      - image: springcloud/eureka
+        name: eureka
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: greeter
+  name: eureka
   namespace: gateway-demo
 spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 8761
   selector:
-    run: hello
+    run: eureka
   type: ClusterIP
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hello
+  name: eureka
   namespace: gateway-demo
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
   - hosts:
-    - greeter.minikube.crdant.io
-    secretName: hello-tls
+    - eureka.minikube.crdant.io
+    secretName: eureka-tls
   rules:
-  - host: greeter.minikube.crdant.io
+  - host: eureka.minikube.crdant.io
     http:
       paths:
       - path: /
         backend:
-          serviceName: hello
+          serviceName: eureka
           servicePort: 80

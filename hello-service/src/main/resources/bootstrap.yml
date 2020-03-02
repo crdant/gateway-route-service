@@ -8,6 +8,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: https://discovery.local.crdant.io:8763/eureka
+      defaultZone: http://eureka.gateway-demo.svc/eureka
   instance:
-    hostname: greeter.minikube.crdant.io
+    hostname: hello.gateway-demo.svc
+    nonSecurePort: 80
