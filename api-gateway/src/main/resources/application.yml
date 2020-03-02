@@ -17,12 +17,11 @@ spring:
       client:
         provider:
           uaa:
-            issuer-uri: https://uaa.minikube.crdant.io/uaa/oauth/token
-            jwk-set-uri: https://uaa.minikube.crdant.io/uaa/token_keys
+            issuer-uri: https://uaa.minikube.crdant.io/oauth/token
+            jwk-set-uri: https://uaa.minikube.crdant.io/token_keys
         registration:
           uaa:
             client-id: gateway
             client-secret: grapheme-evoke-moonbeam-manque
             authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid,profile,email,greeter.greet
