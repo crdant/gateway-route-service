@@ -80,5 +80,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: configserver
+          serviceName: config
           servicePort: 80
