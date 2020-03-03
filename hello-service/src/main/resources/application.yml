@@ -7,9 +7,6 @@ management:
         include: "*"
 
 spring:
-  data:
-    mongodb:
-      port: 0
   security:
     oauth2:
       resourceserver:
