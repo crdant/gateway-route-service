@@ -1,0 +1,17 @@
+defaultLanguage: english
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  data:
+    mongodb:
+      host: mongodb.gateway-demo.svc
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://uaa.minikube.crdant.io/token_keys
