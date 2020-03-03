@@ -12,6 +12,7 @@ fi
 url=$1
 
 
+curl -s -X POST -H "Content-Type:application/json" -d "{ \"id\": 1, \"language\" : \"english\", \"text\" : \"Hello\" }" $url/greetings | jq .
 
 curl -s -X POST -H "Content-Type:application/json" -d "{ \"id\": 2, \"language\" : \"spanish\", \"text\" : \"Hola\" }" $url/greetings | jq .
 

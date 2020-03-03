@@ -1,0 +1,269 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uaa-config
+  namespace: gateway-demo
+  labels:
+    app.kubernetes.io/name: uaa
+    app.kubernetes.io/instance: uaa-standalone
+    app.kubernetes.io/version: 74.12.0
+    app.kubernetes.io/component: authorization_server
+    app.kubernetes.io/part-of: uaa
+    app.kubernetes.io/managed-by: kubectl
+data:
+  uaa.yml: |
+    issuer:
+      uri: https://uaa.minikube.crdant.io/
+    encryption:
+      active_key_label: CHANGE-THIS-KEY
+      encryption_keys:
+      - label: CHANGE-THIS-KEY
+        passphrase: CHANGEME
+    login:
+      serviceProviderKey: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIICXQIBAAKBgQDHtC5gUXxBKpEqZTLkNvFwNGnNIkggNOwOQVNbpO0WVHIivig5
+        L39WqS9u0hnA+O7MCA/KlrAR4bXaeVVhwfUPYBKIpaaTWFQR5cTR1UFZJL/OF9vA
+        fpOwznoD66DDCnQVpbCjtDYWX+x6imxn8HCYxhMol6ZnTbSsFW6VZjFMjQIDAQAB
+        AoGAVOj2Yvuigi6wJD99AO2fgF64sYCm/BKkX3dFEw0vxTPIh58kiRP554Xt5ges
+        7ZCqL9QpqrChUikO4kJ+nB8Uq2AvaZHbpCEUmbip06IlgdA440o0r0CPo1mgNxGu
+        lhiWRN43Lruzfh9qKPhleg2dvyFGQxy5Gk6KW/t8IS4x4r0CQQD/dceBA+Ndj3Xp
+        ubHfxqNz4GTOxndc/AXAowPGpge2zpgIc7f50t8OHhG6XhsfJ0wyQEEvodDhZPYX
+        kKBnXNHzAkEAyCA76vAwuxqAd3MObhiebniAU3SnPf2u4fdL1EOm92dyFs1JxyyL
+        gu/DsjPjx6tRtn4YAalxCzmAMXFSb1qHfwJBAM3qx3z0gGKbUEWtPHcP7BNsrnWK
+        vw6By7VC8bk/ffpaP2yYspS66Le9fzbFwoDzMVVUO/dELVZyBnhqSRHoXQcCQQCe
+        A2WL8S5o7Vn19rC0GVgu3ZJlUrwiZEVLQdlrticFPXaFrn3Md82ICww3jmURaKHS
+        N+l4lnMda79eSp3OMmq9AkA0p79BvYsLshUJJnvbk76pCjR28PK4dV1gSDUEqQMB
+        qy45ptdwJLqLJCeNoR0JUcDNIRhOCuOPND7pcMtX6hI/
+        -----END RSA PRIVATE KEY-----
+      serviceProviderKeyPassword: password
+      serviceProviderCertificate: |
+        -----BEGIN CERTIFICATE-----
+        MIIDSTCCArKgAwIBAgIBADANBgkqhkiG9w0BAQQFADB8MQswCQYDVQQGEwJhdzEO
+        MAwGA1UECBMFYXJ1YmExDjAMBgNVBAoTBWFydWJhMQ4wDAYDVQQHEwVhcnViYTEO
+        MAwGA1UECxMFYXJ1YmExDjAMBgNVBAMTBWFydWJhMR0wGwYJKoZIhvcNAQkBFg5h
+        cnViYUBhcnViYS5hcjAeFw0xNTExMjAyMjI2MjdaFw0xNjExMTkyMjI2MjdaMHwx
+        CzAJBgNVBAYTAmF3MQ4wDAYDVQQIEwVhcnViYTEOMAwGA1UEChMFYXJ1YmExDjAM
+        BgNVBAcTBWFydWJhMQ4wDAYDVQQLEwVhcnViYTEOMAwGA1UEAxMFYXJ1YmExHTAb
+        BgkqhkiG9w0BCQEWDmFydWJhQGFydWJhLmFyMIGfMA0GCSqGSIb3DQEBAQUAA4GN
+        ADCBiQKBgQDHtC5gUXxBKpEqZTLkNvFwNGnNIkggNOwOQVNbpO0WVHIivig5L39W
+        qS9u0hnA+O7MCA/KlrAR4bXaeVVhwfUPYBKIpaaTWFQR5cTR1UFZJL/OF9vAfpOw
+        znoD66DDCnQVpbCjtDYWX+x6imxn8HCYxhMol6ZnTbSsFW6VZjFMjQIDAQABo4Ha
+        MIHXMB0GA1UdDgQWBBTx0lDzjH/iOBnOSQaSEWQLx1syGDCBpwYDVR0jBIGfMIGc
+        gBTx0lDzjH/iOBnOSQaSEWQLx1syGKGBgKR+MHwxCzAJBgNVBAYTAmF3MQ4wDAYD
+        VQQIEwVhcnViYTEOMAwGA1UEChMFYXJ1YmExDjAMBgNVBAcTBWFydWJhMQ4wDAYD
+        VQQLEwVhcnViYTEOMAwGA1UEAxMFYXJ1YmExHTAbBgkqhkiG9w0BCQEWDmFydWJh
+        QGFydWJhLmFyggEAMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEEBQADgYEAYvBJ
+        0HOZbbHClXmGUjGs+GS+xC1FO/am2suCSYqNB9dyMXfOWiJ1+TLJk+o/YZt8vuxC
+        KdcZYgl4l/L6PxJ982SRhc83ZW2dkAZI4M0/Ud3oePe84k8jm3A7EvH5wi5hvCkK
+        RpuRBwn3Ei+jCRouxTbzKPsuCVB+1sNyxMTXzf0=
+        -----END CERTIFICATE-----
+    LOGIN_SECRET: loginsecret
+    jwt:
+      token:
+        policy:
+          activeKeyId: default
+          keys:
+            default:
+              signingKey: | 
+                -----BEGIN RSA PRIVATE KEY-----
+                MIIEowIBAAKCAQEAr9NhptCYFwipjFQtFqb+7Qe92T/j9csnhsNjwcCMQV8/aWqU
+                0CoU35y/0bnAY74eu+xVFhj6dHy6tmSBALPxFUvswCc2Did0+fvJ6+hSWHeTBEjp
+                8UYaSWoU7lMpNJmJI+xBbEaxVo6slfvFSYwULld+ziEIrrRtA+b6A3TOno8u8PV1
+                eqG9A/XsPjeCy/omMcxzuLh7wk/x7K4wNQVjgfUVgUbPHmIG3y/rYbWOdarECbro
+                ncHz59q0JwGHDGWAusY2Ylnc34xrYiZ3DassHKKJCdyhLmvb9sRAxAhIZhJ4mQnu
+                N1ZaPe+yNmMkbBPjsmgtDT9kfySVQi/5jezDPwIDAQABAoIBACpnsr+Gw4eaoTmk
+                +5LhB86m9VS2IgafzpKkASUziSAjFqoX+HgUDiC4L1Mnl4z2x3bPUt4XfCAoDOf8
+                aViADX7zZtAZJOJZBc9cuKBa0bFgdWatJy73l1NpcE7iY6e59+dgDY9NpWuY0WsC
+                49wPGrbqhzyznuJzxW8Rf+7hdwuqWgkAlEY2IXoQEaZaZ91WRmpYbYJuSuSC9OW+
+                25rs0MPeeLYWRmGUTiU0furrR94Je1nimN3Uvo0PcL64Uy7ZUNJkqalpTz8rzIFZ
+                GW1MHm7j3rk8CeyJoNZr03dwwcJEAcZ1PuOOQ05yQietoBIBxi7F1XJnkSnMxyMA
+                7Js7FgECgYEA6C4lK2ctUxYJefBlCAxqF5TPbGLDL/fIwwdN+OcKlIzZBNBe5xPI
+                ZgRAMIUrr8npfu8UnNYLABUzdQfeUICjijrMIHD5NZMngQxM43U6yI2TD+Bo0R1Y
+                RXA85FOTD+0X6h/Tl+1lu5x0E7fDKce1pzrXopWbNe4q11UmhjvviL8CgYEAwd0r
+                4BtBPP9buGUk4hXa0taqjxzBeoVW7XOE7XPfWCmAR2z+o3fh1hWfKsm3E85caKYy
+                zbujciAawybk/PcIz6prdaFBKDa9KJNew1YCQgQXMGPP0mPABlgyRGIi/QPqQycc
+                yi1Z0T/LGel+AM16H5BYRWbxUOmzRcCX0q6a5YECgYBYzHVI0VBDa7U6Htf1KRJW
+                bIKcWHWAXgs5lAydOngQcoH51lvFkwpdAhkutXAM7nNQKc4/YZmZcYJZqyW6skhZ
+                8LzrV2notJwyPesWP1q5I3RwaQqNl+SPwip3xQME30/7Kir5+0CibWbzt5971jbC
+                e73HH+LZ0HowGw/93ORy7wKBgQCjN9v91dSKT5BgYj+4XaAbjQKSdSpsRiEW0ACl
+                jr4G0wIeoKSO6proDNIySxxpf3+L2AnD7uvAZUlC7tcyJ6ZyeM/6fGaIPfXqWJEb
+                Mqm5/QmtAwvw3WzJqq2/p0Q/83DjUuXJTn9lTiloSo58jIL6WiQHYpFfhzMZUfpB
+                NiJRgQKBgE5lOLSDHQ/Y0ueu2fed1xy4njqrae5V56uAqEWLhJV99O7Z/63haWG+
+                Zzkd4XliDsTGer9pmdjRse1AGD+t3H6Y61m3rS636vGDQdVIBGPpXBjLkWMhIPyn
+                1HdvhbYoZKlbJb2bQvbFaHU4p98Q+Qk047voQD1DpEjXx9JPTOG4
+                -----END RSA PRIVATE KEY-----
+    database:
+      maxactive: 100
+      maxidle: 10
+      minidle: 0
+      removeabandoned: false
+      logabandoned: true
+      abandonedtimeout: 300
+      url: jdbc:hsqldb:mem:uaa
+      username: sa
+      password: password
+  log4j2.properties: |-
+    status = error
+    dest = err
+    name = UaaLog
+
+    property.log_pattern=[%d{yyyy-MM-dd HH:mm:ss.SSS}] uaa%X{context} - %pid [%t] .... %5p --- %c{1}: %replace{%m}{(?<=password=|client_secret=)([^&]*)}{<redacted>}%n
+
+    appender.uaaDefaultAppender.type = Console
+    appender.uaaDefaultAppender.name = UaaDefaultAppender
+    appender.uaaDefaultAppender.layout.type = PatternLayout
+    appender.uaaDefaultAppender.layout.pattern = [UAA] ${log_pattern}
+
+    appender.uaaAuditAppender.type = Console
+    appender.uaaAuditAppender.name = UaaAuditAppender
+    appender.uaaAuditAppender.layout.type = PatternLayout
+    appender.uaaAuditAppender.layout.pattern = [UAA_AUDIT] ${log_pattern}
+
+    rootLogger.level = info
+    rootLogger.appenderRef.uaaDefaultAppender.ref = UaaDefaultAppender
+
+    logger.UAAAudit.name = UAA.Audit
+    logger.UAAAudit.level = info
+    logger.UAAAudit.additivity = true
+    logger.UAAAudit.appenderRef.auditEventLog.ref = UaaAuditAppender
+
+    logger.cfIdentity.name = org.cloudfoundry.identity
+    logger.cfIdentity.level = info
+    logger.cfIdentity.additivity = false
+    logger.cfIdentity.appenderRef.uaaDefaultAppender.ref = UaaDefaultAppender
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uaa
+  namespace: gateway-demo
+  labels:
+    app.kubernetes.io/name: uaa
+    app.kubernetes.io/instance: uaa-standalone
+    app.kubernetes.io/version: 74.12.0
+    app.kubernetes.io/component: authorization_server
+    app.kubernetes.io/part-of: uaa
+    app.kubernetes.io/managed-by: kubectl
+spec:
+  selector:
+    matchLabels:
+      app: uaa-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: uaa-deployment
+        app.kubernetes.io/name: uaa
+        app.kubernetes.io/instance: uaa-standalone
+        app.kubernetes.io/version: 74.12.0
+        app.kubernetes.io/component: authorization_server
+        app.kubernetes.io/part-of: uaa
+        app.kubernetes.io/managed-by: kubectl
+      namespace: gateway-demo
+    spec:
+      serviceAccountName: uaa
+      containers:
+      - name: uaa
+        image: cfidentity/uaa@sha256:d9edd669f865c57ae532fc547a069b84d797554ea3368b355172c433002cef4c
+        resources:
+          requests:
+            memory: 512Mi
+            cpu: 500m
+        ports:
+        - name: http-uaa
+          containerPort: 8080
+          protocol: TCP
+        env:
+        - name: BPL_TOMCAT_ACCESS_LOGGING
+          value: "y"
+        - name: JAVA_OPTS
+          value: -Djava.security.egd=file:/dev/./urandom -Dlogging.config=/etc/config/log4j2.properties
+            -Dlog4j.configurationFile=/etc/config/log4j2.properties
+        - name: spring_profiles
+          value: default,hsqldb
+        - name: UAA_CONFIG_PATH
+          value: /etc/config
+        volumeMounts:
+        - name: uaa-config
+          mountPath: /etc/config
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-uaa
+          failureThreshold: 25
+          initialDelaySeconds: 60
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http-uaa
+      volumes:
+      - name: uaa-config
+        configMap:
+          name: uaa-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uaa
+  labels:
+    app: uaa-deployment
+    app.kubernetes.io/name: uaa
+    app.kubernetes.io/instance: uaa-standalone
+    app.kubernetes.io/version: 74.12.0
+    app.kubernetes.io/component: authorization_server
+    app.kubernetes.io/part-of: uaa
+    app.kubernetes.io/managed-by: kubectl
+  namespace: gateway-demo
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    name: http-uaa
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: uaa-deployment
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: uaa
+  namespace: gateway-demo
+  labels:
+    app.kubernetes.io/name: uaa
+    app.kubernetes.io/instance: uaa-standalone
+    app.kubernetes.io/version: 74.12.0
+    app.kubernetes.io/component: authorization_server
+    app.kubernetes.io/part-of: uaa
+    app.kubernetes.io/managed-by: kubectl
+automountServiceAccountToken: false
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: uaa-ingress
+  namespace: gateway-demo
+  labels:
+    app.kubernetes.io/name: uaa
+    app.kubernetes.io/instance: uaa-standalone
+    app.kubernetes.io/version: 74.12.0
+    app.kubernetes.io/component: authorization_server
+    app.kubernetes.io/part-of: uaa
+    app.kubernetes.io/managed-by: kubectl
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  tls:
+  - hosts:
+    - uaa.minikube.crdant.io
+    secretName: uaa-tls
+  rules:
+  - host: uaa.minikube.crdant.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: uaa
+          servicePort: 80

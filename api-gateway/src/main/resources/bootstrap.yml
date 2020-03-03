@@ -3,22 +3,12 @@ spring:
     name: gateway
   cloud:
     config:
-      uri: https://config.local.crdant.io:8883
-
-server:
-  port: 8443
-  ssl:
-    key-store: /usr/local/etc/certbot/live/local.crdant.io/certificate.p12
-    keyStoreType: PKCS12
-    keyAlias: local
-    key-store-password: numb-avaunt-barbados-pelt
+      uri: http://config.gateway-demo.svc
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: https://discovery.local.crdant.io:8763/eureka
+      defaultZone: http://eureka.gateway-demo.svc/eureka
   instance:
-    hostname: gateway.local.crdant.io
-    secure-port: ${server.port}
-    secure-port-enabled: true
-    non-secure-port-enabled: false
+    hostname: gateway.gateway-demo.svc
+    nonSecurePort: 80

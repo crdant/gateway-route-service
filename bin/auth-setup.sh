@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-uaa target https://uaa.local.crdant.io:9443/uaa
+uaa target https://uaa.minikube.crdant.io/
 uaa get-client-credentials-token admin -s adminsecret
 
 uaa create-group greeter.greet -d "Allow the greeter to say hello"
@@ -10,7 +10,7 @@ uaa create-client gateway -s grapheme-evoke-moonbeam-manque \
     --authorized_grant_types authorization_code \
     --scope openid,email,profile,greeter.greet \
     --authorities uaa.resource \
-    --redirect_uri 'https://gateway.local.crdant.io:8443/login/oauth2/code/*'
+    --redirect_uri 'https://gateway.minikube.crdant.io/login/oauth2/code/*'
 
 uaa create-user $USER  \
     --password "springboot" \

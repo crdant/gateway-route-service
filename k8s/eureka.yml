@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: eureka
+  name: eureka
+  namespace: gateway-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: eureka
+  template:
+    metadata:
+      labels:
+        run: eureka
+    spec:
+      containers:
+      - image: crdant/eureka
+        name: eureka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery
+  namespace: gateway-demo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: eureka
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: eureka
+  namespace: gateway-demo
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  tls:
+  - hosts:
+    - discovery.minikube.crdant.io
+    secretName: discovery-tls
+  rules:
+  - host: discovery.minikube.crdant.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: discovery
+          servicePort: 80
