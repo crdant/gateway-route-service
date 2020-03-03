@@ -1,84 +1,56 @@
-buildscript {
-	ext {
-		kotlinVersion = '1.2.71'
-		springBootVersion = '2.1.2.RELEASE'
-    jibVersion = '1.8.0'
-	}
-	repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath("com.google.cloud.tools.jib:com.google.cloud.tools.jib.gradle.plugin:${jibVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
-	}
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+	id("org.springframework.boot")
+	id("io.spring.dependency-management")
+  id("com.google.cloud.tools.jib")
+	kotlin("jvm")
+	kotlin("plugin.spring")
 }
 
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-spring'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.google.cloud.tools.jib'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
-sourceCompatibility = '1.8'
-targetCompatibility = 1.8
+extra["springCloudVersion"] = "Hoxton.SR1"
 
-ext['springCloudVersion'] = 'Greenwich.RELEASE'
-ext['springCloudServicesVersion'] = '2.1.0.RELEASE'
+dependencies {
+  implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.springframework.security:spring-security-oauth2-jose")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 
-repositories {
-	mavenCentral()
-	maven { url "https://repo.spring.io/milestone" }
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+  implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.springframework.cloud:spring-cloud-starter-config")
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+	}
+	testImplementation("org.springframework.security:spring-security-test")
+  testImplementation("io.projectreactor:reactor-test")
 }
 
 dependencyManagement {
 	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-		mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:${springCloudServicesVersion}"
-	}
-}
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-	// implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
-
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.security:spring-security-oauth2-resource-server'
-	implementation 'org.springframework.security:spring-security-oauth2-jose'
-	implementation 'io.pivotal.spring.cloud:spring-cloud-sso-connector:2.1.3.RELEASE'
-
-	implementation 'io.pivotal.spring.cloud:spring-cloud-services-starter-config-client'
-	implementation 'io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry'
-
-	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
-	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-	implementation 'org.jetbrains.kotlin:kotlin-reflect'
-
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-}
-
-compileKotlin {
-	kotlinOptions {
-		freeCompilerArgs = ['-Xjsr305=strict']
-		jvmTarget = '1.8'
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
 	}
 }
 
-compileTestKotlin {
+tasks.withType<Test> {
+	useJUnitPlatform()
+}
+
+tasks.withType<KotlinCompile> {
 	kotlinOptions {
-		freeCompilerArgs = ['-Xjsr305=strict']
-		jvmTarget = '1.8'
+		freeCompilerArgs = listOf("-Xjsr305=strict")
+		jvmTarget = "1.8"
 	}
 }
 
 jib {
-  to.image = 'crdant/worldly-hello'
+  to.image = "crdant/worldly-hello"
 }
