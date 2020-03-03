@@ -16,6 +16,33 @@ data:
       GRANT ALL PRIVILEGES ON DATABASE uaa TO uaa;
     SQL
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/postgres"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,16 +62,24 @@ spec:
         image: postgres:latest
         ports:
         - containerPort: 5432
+        env:
+        - name: PGDATA
+          value: /data/postgres
         envFrom:
         - secretRef:
             name: postgres-auth
         volumeMounts:
-        - name: postgres-init
+        - name: init
           mountPath: /docker-entrypoint-initdb.d 
+        - name: data
+          mountPath: /data/postgres
       volumes:
-      - name: postgres-init 
+      - name: init 
         configMap: 
           name: postgres-init
+      - name: data
+        persistentVolumeClaim:
+          claimName: postgres
 ---
 apiVersion: v1
 kind: Service
