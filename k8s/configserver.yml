@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configserver
+  namespace: gateway-demo
+data:
+  SPRING_APPLICATION_JSON: |
+    {
+      "spring": {
+        "profiles": {
+          "active": "git"
+        },
+        "cloud": {
+          "config": {
+            "server": {
+              "git": {
+                "uri": "https://github.com/crdant/spring-cloud-gateway-demo",
+                "searchPaths": "config/{application}/{profile}"
+              }
+            }
+          }
+        }
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: configserver
+  name: configserver
+  namespace: gateway-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: configserver
+  template:
+    metadata:
+      labels:
+        run: configserver
+    spec:
+      containers:
+      - image: crdant/configserver
+        name: configserver
+        envFrom:
+          - configMapRef:
+              name: configserver
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config
+  namespace: gateway-demo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: configserver
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: configserver
+  namespace: gateway-demo
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  tls:
+  - hosts:
+    - config.minikube.crdant.io
+    secretName: configserver-tls
+  rules:
+  - host: config.minikube.crdant.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: configserver
+          servicePort: 80

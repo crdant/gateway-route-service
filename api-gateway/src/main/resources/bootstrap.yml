@@ -3,7 +3,7 @@ spring:
     name: gateway
   cloud:
     config:
-      uri: http://config.local.crdant.io:8883
+      uri: http://config.gateway-demo.svc
 
 eureka:
   client:
