@@ -21,7 +21,10 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
----
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: minikube
+ ---
 apiVersion: v1
 kind: Service
 metadata:

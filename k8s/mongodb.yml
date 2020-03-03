@@ -1,0 +1,72 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/mongodb"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: gateway-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: mongodb
+  template:
+    metadata:
+      labels:
+        run: mongodb
+    spec:
+      containers:
+      - image: mongo:latest
+        imagePullPolicy: Always
+        name: mongodb
+        ports:
+        - containerPort: 27101
+          protocol: TCP
+        volumeMounts:
+        - name: data
+          mountPath: /data/db
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mongodb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: gateway-demo
+spec:
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 27017
+  selector:
+    run: mongodb
+  sessionAffinity: None
+  type: ClusterIP

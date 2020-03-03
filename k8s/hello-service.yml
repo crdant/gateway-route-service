@@ -22,6 +22,9 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: minikube
         resources: {}
 ---
 apiVersion: v1
