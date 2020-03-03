@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: database
+  name: mongodb
   namespace: gateway-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: database
+      run: mongodb
   template:
     metadata:
       labels:
-        run: database
+        run: mongodb
     spec:
       containers:
       - image: mongo:latest
         imagePullPolicy: Always
-        name: database
+        name: mongodb
         ports:
         - containerPort: 27101
           protocol: TCP
@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: database
+  name: mongodb
   namespace: gateway-demo
 spec:
   ports:
@@ -33,6 +33,6 @@ spec:
     protocol: TCP
     targetPort: 27017
   selector:
-    run: database
+    run: mongodb
   sessionAffinity: None
   type: ClusterIP

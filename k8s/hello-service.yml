@@ -23,7 +23,8 @@ spec:
         - containerPort: 8080
           protocol: TCP
         env:
-          SPRING_PROFILES_ACTIVE: kubernetes
+        - name: SPRING_PROFILES_ACTIVE
+          value: kubernetes
         resources: {}
 ---
 apiVersion: v1
