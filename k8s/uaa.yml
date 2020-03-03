@@ -100,9 +100,10 @@ data:
       removeabandoned: false
       logabandoned: true
       abandonedtimeout: 300
-      url: jdbc:hsqldb:mem:uaa
-      username: sa
-      password: password
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://postgres.gateway-demo.svc/uaa
+      username: uaa
+      password: restrain-whee-jealousy-typolog-potable
   log4j2.properties: |-
     status = error
     dest = err
@@ -181,7 +182,7 @@ spec:
           value: -Djava.security.egd=file:/dev/./urandom -Dlogging.config=/etc/config/log4j2.properties
             -Dlog4j.configurationFile=/etc/config/log4j2.properties
         - name: spring_profiles
-          value: default,hsqldb
+          value: default,postgresql
         - name: UAA_CONFIG_PATH
           value: /etc/config
         volumeMounts:
