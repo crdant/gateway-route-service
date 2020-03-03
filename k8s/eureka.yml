@@ -16,19 +16,19 @@ spec:
         run: eureka
     spec:
       containers:
-      - image: springcloud/eureka
+      - image: crdant/eureka
         name: eureka
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: eureka
+  name: discovery
   namespace: gateway-demo
 spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 8761
+    targetPort: 8080
   selector:
     run: eureka
   type: ClusterIP
@@ -43,13 +43,13 @@ metadata:
 spec:
   tls:
   - hosts:
-    - eureka.minikube.crdant.io
-    secretName: eureka-tls
+    - discovery.minikube.crdant.io
+    secretName: discovery-tls
   rules:
-  - host: eureka.minikube.crdant.io
+  - host: discovery.minikube.crdant.io
     http:
       paths:
       - path: /
         backend:
-          serviceName: eureka
+          serviceName: discovery
           servicePort: 80
