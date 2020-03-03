@@ -56,5 +56,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: hello
+          serviceName: greeter
           servicePort: 80
