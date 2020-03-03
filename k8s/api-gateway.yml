@@ -23,7 +23,7 @@ spec:
           protocol: TCP
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: kubernetes
+          value: minikube
  ---
 apiVersion: v1
 kind: Service
