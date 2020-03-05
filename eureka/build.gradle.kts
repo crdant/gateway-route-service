@@ -1,7 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-java.sourceCompatibility = JavaVersion.VERSION_11
-
 dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-config")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server")
@@ -13,6 +11,3 @@ dependencyManagement {
 	}
 }
 
-jib {
-  to.image = "crdant/eureka"
-}

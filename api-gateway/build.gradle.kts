@@ -19,6 +19,3 @@ dependencyManagement {
 	}
 }
 
-jib {
-  to.image = "crdant/greeting-api-gateway"
-}

@@ -1,7 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
   
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
@@ -23,6 +21,3 @@ dependencyManagement {
 	}
 }
 
-jib {
-  to.image = "crdant/worldly-hello"
-}
