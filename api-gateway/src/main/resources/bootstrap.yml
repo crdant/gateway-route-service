@@ -3,12 +3,4 @@ spring:
     name: gateway
   cloud:
     config:
-      uri: http://config.demo.svc
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://discovery.demo.svc/eureka
-  instance:
-    hostname: gateway.demo.svc
-    nonSecurePort: 80
+      uri: ${SPRING_CONFIG_URI:http://localhost:8888}
