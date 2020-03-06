@@ -14,7 +14,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://uaa.minikube.crdant.io/token_keys
+          jwk-set-uri: https://${UAA_URI}/token_keys
 
 eureka:
   client:

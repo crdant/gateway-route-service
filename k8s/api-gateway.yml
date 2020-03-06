@@ -29,6 +29,8 @@ spec:
           value: http://config.demo.svc
         - name: SPRING_DISCOVERY_URI
           value: http://discovery.demo.svc
+        - name: UAA_URI
+          value: https://uaa.minikube.crdant.io
 ---
 apiVersion: v1
 kind: Service
