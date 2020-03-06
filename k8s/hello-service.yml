@@ -25,7 +25,10 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: minikube
-        resources: {}
+        - name: SPRING_CONFIG_URI
+          value: http://config.demo.svc
+        - name: SPRING_DISCOVERY_URI
+          value: http://discovery.demo.svc
 ---
 apiVersion: v1
 kind: Service

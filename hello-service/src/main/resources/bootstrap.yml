@@ -5,10 +5,3 @@ spring:
     config:
       uri: http://config.demo.svc
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://discovery.demo.svc/eureka
-  instance:
-    hostname: greeter.demo.svc
-    nonSecurePort: 80

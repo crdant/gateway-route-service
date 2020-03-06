@@ -1,5 +1,16 @@
+server:
+  port: 8444
+
 defaultLanguage: french
 spring:
   data:
     mongodb:
       port: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${SPRING_DISCOVERY_URI:http://localhost:8761}
+  instance:
+    hostname: greeter.${LOCAL_DOMAIN}
+    securePort: ${server.port}  

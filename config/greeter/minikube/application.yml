@@ -15,3 +15,11 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: https://uaa.minikube.crdant.io/token_keys
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery.demo.svc/eureka
+  instance:
+    hostname: greeter.demo.svc
+    nonSecurePort: 80
