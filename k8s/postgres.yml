@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-init
+  namespace: demo
   labels:
     app: postgres
 data:
@@ -32,6 +33,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
+  namespace: demo
 spec:
   replicas: 1
   selector:
@@ -70,7 +72,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: gateway-demo
+  namespace: demo
 spec:
   ports:
   - port: 5432

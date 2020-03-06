@@ -3,7 +3,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: local-cert-issuer
-  namespace: gateway-demo
+  namespace: demo
 spec:
   ca:
     secretName: ca-key-pair
@@ -12,7 +12,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
  name: letsencrypt
- namespace: gateway-demo
+ namespace: demo
 spec:
  acme:
    # The ACME server URL

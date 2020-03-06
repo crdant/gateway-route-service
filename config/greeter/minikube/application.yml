@@ -9,7 +9,7 @@ management:
 spring:
   data:
     mongodb:
-      host: mongodb.gateway-demo.svc
+      host: mongodb.demo.svc
   security:
     oauth2:
       resourceserver:

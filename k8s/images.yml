@@ -3,6 +3,7 @@ apiVersion: build.pivotal.io/v1alpha1
 kind: Image
 metadata:
   name: greeting-api-gateway
+  namespace: demo
 spec:
   tag: crdant/greeting-api-gateway
   imageTaggingStrategy: BuildNumber
@@ -21,6 +22,7 @@ apiVersion: build.pivotal.io/v1alpha1
 kind: Image
 metadata:
   name: worldly-hello
+  namespace: demo
 spec:
   tag: crdant/worldly-hello
   imageTaggingStrategy: BuildNumber
@@ -39,6 +41,7 @@ apiVersion: build.pivotal.io/v1alpha1
 kind: Image
 metadata:
   name: eureka
+  namespace: demo
 spec:
   tag: crdant/eureka
   imageTaggingStrategy: BuildNumber
@@ -57,6 +60,7 @@ apiVersion: build.pivotal.io/v1alpha1
 kind: Image
 metadata:
   name: configserver
+  namespace: demo
 spec:
   tag: crdant/configserver
   imageTaggingStrategy: BuildNumber
