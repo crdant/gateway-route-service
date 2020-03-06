@@ -1,0 +1,15 @@
+---
+apiVersion: build.pivotal.io/v1alpha1
+kind: ClusterBuilder
+metadata:
+  name: kpack
+  namespace: gateway-demo 
+spec:
+  image: cloudfoundry/cnb:bionic
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kpack
+secrets:
+- name: registry-credentials

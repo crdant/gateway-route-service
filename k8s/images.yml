@@ -1,0 +1,73 @@
+---
+apiVersion: build.pivotal.io/v1alpha1
+kind: Image
+metadata:
+  name: greeting-api-gateway
+spec:
+  tag: crdant/greeting-api-gateway
+  imageTaggingStrategy: BuildNumber
+  serviceAccount: kpack
+  cacheSize: "1.5Gi"
+  builder:
+    name: kpack
+    kind: ClusterBuilder
+  source:
+    git:
+      url: https://github.com/crdant/spring-cloud-gateway-demo
+      revision: master 
+    subPath: api-gateway
+---
+apiVersion: build.pivotal.io/v1alpha1
+kind: Image
+metadata:
+  name: worldly-hello
+spec:
+  tag: crdant/worldly-hello
+  imageTaggingStrategy: BuildNumber
+  serviceAccount: kpack
+  cacheSize: "1.5Gi"
+  builder:
+    name: kpack
+    kind: ClusterBuilder
+  source:
+    git:
+      url: https://github.com/crdant/spring-cloud-gateway-demo
+      revision: master
+    subPath: hello-service
+---
+apiVersion: build.pivotal.io/v1alpha1
+kind: Image
+metadata:
+  name: eureka
+spec:
+  tag: crdant/eureka
+  imageTaggingStrategy: BuildNumber
+  serviceAccount: kpack
+  cacheSize: "1.5Gi"
+  builder:
+    name: kpack
+    kind: ClusterBuilder
+  source:
+    git:
+      url: https://github.com/crdant/spring-cloud-gateway-demo
+      revision: master
+    subPath: eureka
+---
+apiVersion: build.pivotal.io/v1alpha1
+kind: Image
+metadata:
+  name: configserver
+spec:
+  tag: crdant/configserver
+  imageTaggingStrategy: BuildNumber
+  serviceAccount: kpack
+  cacheSize: "1.5Gi"
+  builder:
+    name: kpack
+    kind: ClusterBuilder
+  source:
+    git:
+      url: https://github.com/crdant/spring-cloud-gateway-demo
+      revision: master
+    subPath: configserver
+
