@@ -13,8 +13,8 @@ $ ./gradlew assemble
 
 ## Run
 
-The demo is configured to run locally or on Pivotal 
-Applicaton service. A Kubernetes deployment is in the works.
+The demo is configured to run locally, on Kubernets, or on Tanzu 
+Applicaton Service (or another Cloud Foundry runtime).
 
 ### Run locally
 
@@ -41,7 +41,7 @@ can if you want a port other than `9443` you can update that.
 1. Set up authentication by running the `auth-setup.sh` script.
 
 ```shell
-auth-setup.sh
+auth-setup
 Target set to https://uaa.local.crdant.io:9443/uaa
 Access token successfully fetched and added to context.
 {
@@ -220,7 +220,7 @@ until you terminate each one.
 4. Load the test data in a third terminal:
 
 ```shell
-$ create-greeting.sh https://greeter.local.crdant.io:7443
+$ create-greeting https://greeter.local.crdant.io:7443
 
   {
     "id": 2,
@@ -255,11 +255,114 @@ $ create-greeting.sh https://greeter.local.crdant.io:7443
 Gateway and it will prompt you to log in, then forward your traffic to the Greeter
 service.
 
-### Running on Pivotal Application Service
+### Running on Kubernetes
+
+#### Prerequisites
+
+To use the demo as is, you will need to prepare your cluster by installing a couple
+of components that are not in this repository.  I've included a setup script to run
+a Minikube cluster with all of the prerequisities installed. To create that cluster 
+locally run 
+
+```shell
+$ minikube-setup
+```
+
+and the cluster `gateway-demo` will be configured and ready for you to use.
+
+If you're using your own cluster, you'll want to makes sure that both [cert-manager]
+(https://cert-manager.io/) and [kpack](https://github.com/pivotal/kpack) are installed. 
+Both can be installed from online YAMLs, so running 
+
+```shell
+$ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.13.1/cert-manager.yaml
+$ kubectl apply -f https://github.com/pivotal/kpack/releases/download/v0.0.6/release-0.0.6.yaml
+```
+
+### Running the demo
+
+To run the demo on Kubernetes, install the components of the architecture in
+layers starting with some supporting elements. Before doing that, you'll need to
+create a series of secrets for use by the other components. I haven't committed 
+my secrets file, because it's, well, secret.
+
+The secrets you'll need are:
+
+| Secret  | Content |
+| ------------- | ------------- |
+| gcp-dns-credentials  | A Google private key JSON for a service account that can manipulate DNS. This is used by Cert Manager for the Let's Encrypt DNS challenge. It presumes that you're using Google for DNS of your cluster's inbound subdomain. You'll need a different secret and to edit `issuer.yml` if that's not the case.  |
+| postgres-auth | Contains one data field, `POSTGRES_PASSWORD` which will be the password 
+that postgres uses for it's admin password |
+| registry-credentials | A secret of type `kubernetes.io/basic-auth` that contains a username and password for your image registry. Currently presumes Docker Hub.
+
+Create all the secrets into the `demo` namespace.
+
+1. After the secrets are created, create the cluster certificate issuer that uses 
+Let's Encrypt to create TLS certificates for your services.
+
+```shell
+$ kubectl apply -f k8s/issuer.yml
+```
+
+2. Create a `kpack` cluster builder to build images used in the demo.
+
+```shell
+$ kubectl apply -f k8s/kpack.yml
+```
+
+3. Build the images
+
+```shell
+$ kubectl apply -f k8s/images.yml
+```
+
+this will take a little while. You may want to run 
+
+```shell
+$ watch kubectl get pods,image
+```
+
+to watch the building process and confirm when the image build has completed
+
+4. Create the MongoDB appplication database and Postgres DB used by UAA.
+
+```shell
+$ kubectl apply -f k8s/mongodb.yml -f k8s/postgres.yml
+```
+
+5. Create the supporting services: UAA for authentication and authorization, Eureka for 
+service discovery, and Spring Cloud Config Server for configuration.
+
+```shell
+$ kubectl apply -f k8s/uaa.yml -f k8s/eureka.yml -f k8s/configserver.yml
+```
+
+6. Configure UAA for authentication 
+
+```shell
+$ auth-setup
+```
+
+this will configure UAA for use by the application, including creating a user for
+you with your local username and the password `springboot`.
+
+7. Deploy the API gateway and the service it mediates.
+
+```shell
+$ kubectl apply -f k8s/api-gateway.yml -f k8s/hello-service.yml
+```
+
+8. Populate the database of the Hello World service.
+
+```shell
+$ create-greetings
+```
+
+### Running on Tanzu Application Service
 
 I've created the manifests to deploy the Microservices and a couple of scripts to 
-simplify creating the supporting infrastructure. You'll need to use your own PCF 
-foundation in order to access Pivotal Single Sign-On, since it's not available on
+simplify creating the supporting infrastructure. You'll need to use your own TAS 
+foundation in order to access the Single Sign-On service, since it's not available on
 Pivotal Web Services. More detail instructions to follow.
 
 ## TLS
