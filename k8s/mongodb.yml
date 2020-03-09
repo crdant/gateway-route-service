@@ -12,12 +12,13 @@ spec:
       storage: 1Gi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mongodb
   namespace: demo
 spec:
   replicas: 1
+  serviceName: mongodb
   selector:
     matchLabels:
       run: mongodb
@@ -55,3 +56,4 @@ spec:
     run: mongodb
   sessionAffinity: None
   type: ClusterIP
+  clusterIP: None
