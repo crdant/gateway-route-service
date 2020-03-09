@@ -3,7 +3,7 @@ apiVersion: build.pivotal.io/v1alpha1
 kind: ClusterBuilder
 metadata:
   name: kpack
-  namespace: gateway-demo 
+  namespace: demo 
 spec:
   image: cloudfoundry/cnb:bionic
 ---

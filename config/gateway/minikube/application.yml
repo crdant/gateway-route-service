@@ -34,3 +34,11 @@ spring:
           - RewritePath="/.*?/(?<path>.*)","/$\{path}"
           - TokenRelay=
           - SecureHeaders=
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${SPRING_DISCOVERY_URI:http://localhost:8761}
+  instance:
+    hostname: gateway.demo.svc
+    nonSecurePort: 80

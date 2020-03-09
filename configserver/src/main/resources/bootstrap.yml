@@ -1,7 +1,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka.gateway-demo.svc/eureka
+      defaultZone: http://eureka.demo.svc/eureka
   instance:
-    hostname: greeter.gateway-demo.svc
+    hostname: greeter.demo.svc
     nonSecurePort: 80

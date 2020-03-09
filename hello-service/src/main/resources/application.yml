@@ -6,9 +6,3 @@ management:
       exposure:
         include: "*"
 
-spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: https://uaa.minikube.crdant.io/token_keys

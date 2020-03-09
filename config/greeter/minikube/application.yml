@@ -9,9 +9,17 @@ management:
 spring:
   data:
     mongodb:
-      host: mongodb.gateway-demo.svc
+      host: mongodb.demo.svc
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://uaa.minikube.crdant.io/token_keys
+          jwk-set-uri: https://${UAA_URI}/token_keys
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery.demo.svc/eureka
+  instance:
+    hostname: greeter.demo.svc
+    nonSecurePort: 80

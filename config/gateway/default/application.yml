@@ -1,3 +1,6 @@
+server:
+  port: 8443
+
 spring:
   cloud:
     gateway:
@@ -34,3 +37,24 @@ spring:
           - RewritePath="/.*?/(?<path>.*)","/$\{path}"
           - TokenRelay=
           - SecureHeaders=
+  security:
+    oauth2:
+      client:
+        provider:
+          uaa:
+            issuer-uri: https://${UAA_URI}/oauth/token
+            jwk-set-uri: https://${UAA_URI}/token_keys
+        registration:
+          uaa:
+            client-id: gateway
+            client-secret: grapheme-evoke-moonbeam-manque
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email,greeter.greet
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${SPRING_DISCOVERY_URI:http://localhost:8761}
+  instance:
+    hostname: gateway.${LOCAL_DOMAIN}
+    securePort: ${server.port}

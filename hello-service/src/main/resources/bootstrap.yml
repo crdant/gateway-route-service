@@ -3,12 +3,5 @@ spring:
     name: greeter
   cloud:
     config:
-      uri: http://config.gateway-demo.svc
+      uri: http://config.demo.svc
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://discovery.gateway-demo.svc/eureka
-  instance:
-    hostname: greeter.gateway-demo.svc
-    nonSecurePort: 80

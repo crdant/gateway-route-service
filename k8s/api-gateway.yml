@@ -5,7 +5,7 @@ metadata:
   labels:
     run: gateway
   name: gateway
-  namespace: gateway-demo
+  namespace: demo
 spec:
   replicas: 1
   selector:
@@ -25,12 +25,18 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: minikube
+        - name: SPRING_CONFIG_URI
+          value: http://config.demo.svc
+        - name: SPRING_DISCOVERY_URI
+          value: http://discovery.demo.svc
+        - name: UAA_URI
+          value: https://uaa.minikube.crdant.io
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: gateway
-  namespace: gateway-demo
+  namespace: demo
 spec:
   ports:
   - port: 80
@@ -44,7 +50,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: gateway
-  namespace: gateway-demo
+  namespace: demo
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
