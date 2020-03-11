@@ -50,7 +50,7 @@ dependencies {
 	"implementation"("org.springframework.boot:spring-boot-starter-security")
 
 	"implementation"("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
-  "implementation"("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+  // "implementation"("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
 
   "implementation"("org.springframework.cloud:spring-cloud-starter-config")
 	"implementation"("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
