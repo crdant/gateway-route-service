@@ -8,6 +8,51 @@ spec:
   ca:
     secretName: ca-key-pair
 ---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: letsencrypt-egress
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 173.245.48.0/20
+    - ipBlock:
+        cidr: 103.21.244.0/22
+    - ipBlock:
+        cidr: 103.22.200.0/22
+    - ipBlock:
+        cidr: 103.31.4.0/22
+    - ipBlock:
+        cidr: 141.101.64.0/18
+    - ipBlock:
+        cidr: 108.162.192.0/18
+    - ipBlock:
+        cidr: 190.93.240.0/20
+    - ipBlock:
+        cidr: 188.114.96.0/20
+    - ipBlock:
+        cidr: 197.234.240.0/22
+    - ipBlock:
+        cidr: 198.41.128.0/17
+    - ipBlock:
+        cidr: 162.158.0.0/15
+    - ipBlock:
+        cidr: 104.16.0.0/12
+    - ipBlock:
+        cidr: 172.64.0.0/13
+    - ipBlock:
+        cidr: 131.0.72.0/22 
+    ports:
+    - protocol: TCP
+      port: 443
+---
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
