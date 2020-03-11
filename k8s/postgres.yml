@@ -84,3 +84,21 @@ spec:
   sessionAffinity: None
   type: ClusterIP
   clusterIP: None
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: uaa-database-access
+spec:
+  podSelector:
+    matchLabels:
+      run: postgres
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: uaa
+          app.kubernetes.io/component: authorization_server
+
