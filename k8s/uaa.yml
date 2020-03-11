@@ -271,7 +271,7 @@ metadata:
     app.kubernetes.io/component: authorization_server
     app.kubernetes.io/part-of: gateway-demo
   annotations:
-    nginx.org/ssl-services: "ssl-svc"
+    # nginx.org/ssl-services: "ssl-svc"
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
