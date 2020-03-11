@@ -24,6 +24,89 @@ data:
       }
     }
 ---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-config-access-to-discovery
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: config-server
+      app.kuberbetes.io/instance: config-server-standalone
+      app.kubernetes.io/part-of: gateway-demo
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: discovery
+          app.kubernetes.io/part-of: gateway-demo
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: github-egress
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: config-server
+      app.kuberbetes.io/instance: config-server-standalone
+      app.kubernetes.io/part-of: gateway-demo
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 192.30.252.0/22
+    - ipBlock:
+        cidr: 185.199.108.0/22
+    - ipBlock:
+        cidr: 140.82.112.0/20
+    - ipBlock:
+        cidr: 13.114.40.48/32
+    - ipBlock:
+        cidr: 13.229.188.59/32
+    - ipBlock:
+        cidr: 13.234.176.102/32
+    - ipBlock:
+        cidr: 13.234.210.38/32
+    - ipBlock:
+        cidr: 13.236.229.21/32
+    - ipBlock:
+        cidr: 13.237.44.5/32
+    - ipBlock:
+        cidr: 13.250.177.223/32
+    - ipBlock:
+        cidr: 15.164.81.167/32
+    - ipBlock:
+        cidr: 18.194.104.89/32
+    - ipBlock:
+        cidr: 18.195.85.27/32
+    - ipBlock:
+        cidr: 18.228.52.138/32
+    - ipBlock:
+        cidr: 18.228.67.229/32
+    - ipBlock:
+        cidr: 18.231.5.6/32
+    - ipBlock:
+        cidr: 35.159.8.160/32
+    - ipBlock:
+        cidr: 52.192.72.89/32
+    - ipBlock:
+        cidr: 52.64.108.95/32
+    - ipBlock:
+        cidr: 52.69.186.44/32
+    - ipBlock:
+        cidr: 52.74.223.119/32
+    - ipBlock:
+        cidr: 52.78.231.108/32
+    ports:
+    - protocol: TCP
+      port: 443
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

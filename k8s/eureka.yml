@@ -27,6 +27,11 @@ spec:
       containers:
       - image: crdant/eureka
         name: eureka
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: minikube
+        - name: SPRING_CONFIG_URI
+          value: http://config.demo.svc
         readinessProbe:
           httpGet:
             path: /actuator/health
@@ -102,7 +107,7 @@ spec:
         matchLabels:
           app.kubernetes.io/component: gateway
           app.kubernetes.io/part-of: gateway-demo
-    ports:
-    - protocol: TCP
-      port: 8080
-
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: configuration
+          app.kubernetes.io/part-of: gateway-demo
