@@ -8,8 +8,7 @@ metadata:
     app.kubernetes.io/instance: uaa-standalone
     app.kubernetes.io/version: 74.12.0
     app.kubernetes.io/component: authorization_server
-    app.kubernetes.io/part-of: uaa
-    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/part-of: gateway-demo
 data:
   uaa.yml: |
     issuer:
@@ -101,7 +100,7 @@ data:
       logabandoned: true
       abandonedtimeout: 300
       driverClassName: org.postgresql.Driver
-      url: jdbc:postgresql://postgres.demo.svc/uaa
+      url: jdbc:postgresql://postgres/uaa
       username: uaa
       password: restrain-whee-jealousy-typolog-potable
   log4j2.properties: |-
@@ -134,6 +133,30 @@ data:
     logger.cfIdentity.additivity = false
     logger.cfIdentity.appenderRef.uaaDefaultAppender.ref = UaaDefaultAppender
 ---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: uaa-database-access
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: uaa
+      app.kubernetes.io/component: authorization_server
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          run: postgres          
+          app.kubernetes.io/name: postgres
+          app.kubernetes.io/instance: postgres-datastore
+          app.kubernetes.io/part-of: gateway-demo
+    ports:
+    - protocol: TCP
+      port: 5432
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -142,10 +165,8 @@ metadata:
   labels:
     app.kubernetes.io/name: uaa
     app.kubernetes.io/instance: uaa-standalone
-    app.kubernetes.io/version: 74.12.0
     app.kubernetes.io/component: authorization_server
-    app.kubernetes.io/part-of: uaa
-    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   selector:
     matchLabels:
@@ -159,8 +180,7 @@ spec:
         app.kubernetes.io/instance: uaa-standalone
         app.kubernetes.io/version: 74.12.0
         app.kubernetes.io/component: authorization_server
-        app.kubernetes.io/part-of: uaa
-        app.kubernetes.io/managed-by: kubectl
+        app.kubernetes.io/part-of: gateway-demo
       namespace: demo
     spec:
       serviceAccountName: uaa
@@ -214,8 +234,7 @@ metadata:
     app.kubernetes.io/instance: uaa-standalone
     app.kubernetes.io/version: 74.12.0
     app.kubernetes.io/component: authorization_server
-    app.kubernetes.io/part-of: uaa
-    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/part-of: gateway-demo
   namespace: demo
 spec:
   type: ClusterIP
@@ -237,8 +256,7 @@ metadata:
     app.kubernetes.io/instance: uaa-standalone
     app.kubernetes.io/version: 74.12.0
     app.kubernetes.io/component: authorization_server
-    app.kubernetes.io/part-of: uaa
-    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/part-of: gateway-demo
 automountServiceAccountToken: false
 ---
 apiVersion: extensions/v1beta1
@@ -251,9 +269,9 @@ metadata:
     app.kubernetes.io/instance: uaa-standalone
     app.kubernetes.io/version: 74.12.0
     app.kubernetes.io/component: authorization_server
-    app.kubernetes.io/part-of: uaa
-    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/part-of: gateway-demo
   annotations:
+    nginx.org/ssl-services: "ssl-svc"
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
@@ -268,3 +286,30 @@ spec:
         backend:
           serviceName: uaa
           servicePort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: uaa-allow-authentication
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: uaa
+      app.kuberbetes.io/instance: uaa-standalone
+      app.kubernetes.io/part-of: gateway-demo
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: services
+          app.kubernetes.io/part-of: gateway-demo
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: gateway
+          app.kubernetes.io/part-of: gateway-demo
+    ports:
+    - protocol: TCP
+      port: 8080
+

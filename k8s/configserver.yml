@@ -27,10 +27,14 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    run: configserver
   name: configserver
   namespace: demo
+  labels:
+    run: configserver
+    app.kubernetes.io/name: config-server
+    app.kuberbetes.io/instance: config-server-standalone
+    app.kubernetes.io/component: configuration
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   replicas: 1
   selector:
@@ -40,6 +44,10 @@ spec:
     metadata:
       labels:
         run: configserver
+        app.kubernetes.io/name: config-server
+        app.kuberbetes.io/instance: config-server-standalone
+        app.kubernetes.io/component: configuration
+        app.kubernetes.io/part-of: gateway-demo
     spec:
       containers:
       - image: crdant/configserver
@@ -47,12 +55,23 @@ spec:
         envFrom:
           - configMapRef:
               name: configserver
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: config
   namespace: demo
+  labels:
+    app.kubernetes.io/name: config-server
+    app.kuberbetes.io/instance: config-server-standalone
+    app.kubernetes.io/component: configuration
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   ports:
   - port: 80
@@ -67,7 +86,13 @@ kind: Ingress
 metadata:
   name: configserver
   namespace: demo
+  labels:
+    app.kubernetes.io/name: eureka
+    app.kuberbetes.io/instance: eureka-standalone
+    app.kubernetes.io/component: discovery
+    app.kubernetes.io/part-of: gateway-demo
   annotations:
+    nginx.org/ssl-services: "ssl-svc"
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
@@ -82,3 +107,30 @@ spec:
         backend:
           serviceName: config
           servicePort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: configserver-allow-access
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: config-server
+      app.kuberbetes.io/instance: config-server-standalone
+      app.kubernetes.io/part-of: gateway-demo
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: services
+          app.kubernetes.io/part-of: gateway-demo
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: gateway
+          app.kubernetes.io/part-of: gateway-demo
+    ports:
+    - protocol: TCP
+      port: 8080
+

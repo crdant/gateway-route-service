@@ -34,6 +34,11 @@ kind: StatefulSet
 metadata:
   name: postgres
   namespace: demo
+  labels:
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/instance: postgres-datastore
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   replicas: 1
   serviceName: postgres
@@ -44,6 +49,10 @@ spec:
     metadata:
       labels:
         run: postgres
+        app.kubernetes.io/name: postgres
+        app.kubernetes.io/instance: postgres-datastore
+        app.kubernetes.io/component: database
+        app.kubernetes.io/part-of: gateway-demo
     spec:
       containers:
       - name: postgres
@@ -74,6 +83,11 @@ kind: Service
 metadata:
   name: postgres
   namespace: demo
+  labels:
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/instance: postgres-datastore
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   ports:
   - port: 5432
@@ -88,11 +102,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: uaa-database-access
+  name: postgres-allow-uaa
 spec:
   podSelector:
     matchLabels:
-      run: postgres
+      app.kubernetes.io/name: postgres
+      app.kubernetes.io/instance: postgres-datastore
+      app.kubernetes.io/part-of: gateway-demo
   policyTypes:
   - Ingress
   ingress:
@@ -101,4 +117,8 @@ spec:
         matchLabels:
           app.kubernetes.io/name: uaa
           app.kubernetes.io/component: authorization_server
+          app.kubernetes.io/part-of: gateway-demo
+    ports:
+    - protocol: TCP
+      port: 5432
 

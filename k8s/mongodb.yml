@@ -16,6 +16,11 @@ kind: StatefulSet
 metadata:
   name: mongodb
   namespace: demo
+  labels:
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/instance: mongodb-datastore
+    app.kubernetes.io/component: database
+    app.kubneretes.io/part-of: gateway-demo
 spec:
   replicas: 1
   serviceName: mongodb
@@ -26,6 +31,10 @@ spec:
     metadata:
       labels:
         run: mongodb
+        app.kubernetes.io/name: mongodb
+        app.kubernetes.io/instance: mongodb-datastore
+        app.kubernetes.io/component: database
+        app.kubneretes.io/part-of: gateway-demo
     spec:
       containers:
       - image: mongo:latest
@@ -47,6 +56,11 @@ kind: Service
 metadata:
   name: mongodb
   namespace: demo
+  labels:
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/instance: mongodb-datastore
+    app.kubernetes.io/component: database
+    app.kubneretes.io/part-of: gateway-demo
 spec:
   ports:
   - port: 27017
@@ -57,3 +71,27 @@ spec:
   sessionAffinity: None
   type: ClusterIP
   clusterIP: None
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mongodb-allow-greeter
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: mongodb
+      app.kubernetes.io/instance: mongodb-datastore
+      app.kubernetes.io/part-of: gateway-demo
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: greeter
+          app.kubernetes.io/component: services
+          app.kubernetes.io/part-of: gateway-demo
+    ports:
+    - protocol: TCP
+      port: 27017
+

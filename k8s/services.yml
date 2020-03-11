@@ -1,0 +1,151 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: greeter-database-access
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: greeter
+      app.kubernetes.io/component: services
+      app.kubernetes.io/part-of: gateway-demo
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          run: mongodb          
+          app.kubernetes.io/name: mongodb
+          app.kubernetes.io/instance: mongodb-datastore
+          app.kubernetes.io/part-of: gateway-demo
+    ports:
+    - protocol: TCP
+      port: 27017
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-services-access-to-discovery
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: services
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: discovery
+          app.kubernetes.io/part-of: gateway-demo
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-services-access-to-config
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: services
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: configuration
+          app.kubernetes.io/part-of: gateway-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: hello
+  name: hello
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: hello
+  template:
+    metadata:
+      labels:
+        run: hello
+        app.kubernetes.io/name: greeter
+        app.kuberbetes.io/instance: greeter-service
+        app.kubernetes.io/component: services
+        app.kubernetes.io/part-of: gateway-demo
+    spec:
+      containers:
+      - image: crdant/worldly-hello
+        imagePullPolicy: Always
+        name: hello
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: minikube
+        - name: SPRING_CONFIG_URI
+          value: http://config.demo.svc
+        - name: SPRING_DISCOVERY_URI
+          value: http://discovery.demo.svc
+        - name: UAA_URI
+          value: https://uaa.minikube.crdant.io
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeter
+  namespace: demo
+  labels:
+    app.kubernetes.io/name: greeter
+    app.kuberbetes.io/instance: greeter-service
+    app.kubernetes.io/component: services
+    app.kubernetes.io/part-of: gateway-demo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: hello
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello
+  namespace: demo
+  labels:
+    app.kubernetes.io/name: eureka
+    app.kuberbetes.io/instance: eureka-standalone
+    app.kubernetes.io/component: discovery
+    app.kubernetes.io/part-of: gateway-demo
+  annotations:
+    nginx.org/ssl-services: "ssl-svc"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+spec:
+  tls:
+  - hosts:
+    - greeter.minikube.crdant.io
+    secretName: hello-tls
+  rules:
+  - host: greeter.minikube.crdant.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: greeter
+          servicePort: 80

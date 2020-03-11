@@ -1,10 +1,15 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    run: eureka
   name: eureka
   namespace: demo
+  labels:
+    run: eureka
+    app.kubernetes.io/name: eureka
+    app.kuberbetes.io/instance: eureka-standalone
+    app.kubernetes.io/component: discovery
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   replicas: 1
   selector:
@@ -14,16 +19,31 @@ spec:
     metadata:
       labels:
         run: eureka
+        app.kubernetes.io/name: eureka
+        app.kuberbetes.io/instance: eureka-standalone
+        app.kubernetes.io/component: discovery
+        app.kubernetes.io/part-of: gateway-demo
     spec:
       containers:
       - image: crdant/eureka
         name: eureka
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: discovery
   namespace: demo
+  labels:
+    app.kubernetes.io/name: eureka
+    app.kuberbetes.io/instance: eureka-standalone
+    app.kubernetes.io/component: discovery
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   ports:
   - port: 80
@@ -38,7 +58,13 @@ kind: Ingress
 metadata:
   name: eureka
   namespace: demo
+  labels:
+    app.kubernetes.io/name: eureka
+    app.kuberbetes.io/instance: eureka-standalone
+    app.kubernetes.io/component: discovery
+    app.kubernetes.io/part-of: gateway-demo
   annotations:
+    # nginx.org/ssl-services: "ssl-svc"
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
@@ -53,3 +79,30 @@ spec:
         backend:
           serviceName: discovery
           servicePort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: eureka-allow-discovery
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: eureka
+      app.kuberbetes.io/instance: eureka-standalone
+      app.kubernetes.io/part-of: gateway-demo
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: services
+          app.kubernetes.io/part-of: gateway-demo
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: gateway
+          app.kubernetes.io/part-of: gateway-demo
+    ports:
+    - protocol: TCP
+      port: 8080
+
