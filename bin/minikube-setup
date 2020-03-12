@@ -1,9 +1,10 @@
 #! /usr/bin/env bash
 set -e
 
-minikube start --profile gateway-demo --memory 4096 --addons ingress --container-runtime containerd --network-plugin cni --enable-default-cni
+minikube start --cpus 4 --profile gateway-demo --memory 6144 --addons ingress --container-runtime containerd --network-plugin cni 
 minikube profile gateway-demo
-curl -s https://docs.projectcalico.org/manifests/calico.yaml | sed -e '/node-role.kubernetes.io/{N;d;}' | kubectl apply -f -
+minikube ssh -- sudo mount bpffs -t bpf /sys/fs/bpf
+kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml
 kubectl create namespace cert-manager
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.13.1/cert-manager.yaml
 kubectl apply -f https://github.com/pivotal/kpack/releases/download/v0.0.6/release-0.0.6.yaml
