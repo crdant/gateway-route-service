@@ -33,7 +33,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: config-server
-      app.kuberbetes.io/instance: config-server-standalone
+      app.kubernetes.io/instance: config-server-standalone
       app.kubernetes.io/part-of: gateway-demo
   policyTypes:
   - Egress
@@ -53,7 +53,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: config-server
-      app.kuberbetes.io/instance: config-server-standalone
+      app.kubernetes.io/instance: config-server-standalone
       app.kubernetes.io/part-of: gateway-demo
   policyTypes:
   - Egress
@@ -115,7 +115,7 @@ metadata:
   labels:
     run: configserver
     app.kubernetes.io/name: config-server
-    app.kuberbetes.io/instance: config-server-standalone
+    app.kubernetes.io/instance: config-server-standalone
     app.kubernetes.io/component: configuration
     app.kubernetes.io/part-of: gateway-demo
 spec:
@@ -128,7 +128,7 @@ spec:
       labels:
         run: configserver
         app.kubernetes.io/name: config-server
-        app.kuberbetes.io/instance: config-server-standalone
+        app.kubernetes.io/instance: config-server-standalone
         app.kubernetes.io/component: configuration
         app.kubernetes.io/part-of: gateway-demo
     spec:
@@ -152,7 +152,7 @@ metadata:
   namespace: demo
   labels:
     app.kubernetes.io/name: config-server
-    app.kuberbetes.io/instance: config-server-standalone
+    app.kubernetes.io/instance: config-server-standalone
     app.kubernetes.io/component: configuration
     app.kubernetes.io/part-of: gateway-demo
 spec:
@@ -171,11 +171,11 @@ metadata:
   namespace: demo
   labels:
     app.kubernetes.io/name: eureka
-    app.kuberbetes.io/instance: eureka-standalone
+    app.kubernetes.io/instance: eureka-standalone
     app.kubernetes.io/component: discovery
     app.kubernetes.io/part-of: gateway-demo
   annotations:
-    nginx.org/ssl-services: "ssl-svc"
+    # nginx.org/ssl-services: "ssl-svc"
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
@@ -199,7 +199,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: config-server
-      app.kuberbetes.io/instance: config-server-standalone
+      app.kubernetes.io/instance: config-server-standalone
       app.kubernetes.io/part-of: gateway-demo
   policyTypes:
   - Ingress

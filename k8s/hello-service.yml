@@ -2,12 +2,11 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: greeter-database-access
+  name: services-database-access
   namespace: demo
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: greeter
       app.kubernetes.io/component: services
       app.kubernetes.io/part-of: gateway-demo
   policyTypes:
@@ -16,7 +15,7 @@ spec:
   - to:
     - podSelector:
         matchLabels:
-          run: mongodb          
+          run: mongodb
           app.kubernetes.io/name: mongodb
           app.kubernetes.io/instance: mongodb-datastore
           app.kubernetes.io/part-of: gateway-demo
@@ -27,7 +26,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-services-access-to-discovery
+  name: services-discovery-access
   namespace: demo
 spec:
   podSelector:
@@ -45,7 +44,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-services-access-to-config
+  name: service-config-access
   namespace: demo
 spec:
   podSelector:
@@ -63,10 +62,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    run: hello
   name: hello
   namespace: demo
+  labels:
+    run: hello
+    app.kubernetes.io/name: greeter
+    app.kuberbetes.io/instance: greeter-service
+    app.kubernetes.io/component: services
+    app.kubernetes.io/part-of: gateway-demo
 spec:
   replicas: 1
   selector:
@@ -129,12 +132,12 @@ metadata:
   name: hello
   namespace: demo
   labels:
-    app.kubernetes.io/name: eureka
-    app.kuberbetes.io/instance: eureka-standalone
-    app.kubernetes.io/component: discovery
+    app.kubernetes.io/name: greeter
+    app.kuberbetes.io/instance: greeter-service
+    app.kubernetes.io/component: services
     app.kubernetes.io/part-of: gateway-demo
   annotations:
-    nginx.org/ssl-services: "ssl-svc"
+    # nginx.org/ssl-services: "ssl-svc"
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
