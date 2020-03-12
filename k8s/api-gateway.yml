@@ -52,6 +52,7 @@ metadata:
   name: gateway
   namespace: demo
   annotations:
+    nginx.org/ssl-services: "ssl-svc"
     cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
   tls:
