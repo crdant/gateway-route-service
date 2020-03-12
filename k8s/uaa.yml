@@ -143,6 +143,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: uaa
       app.kubernetes.io/component: authorization_server
+      app.kubernetes.io/part-of: gateway-demo
   policyTypes:
   - Egress
   egress:
@@ -178,7 +179,6 @@ spec:
         app: uaa-deployment
         app.kubernetes.io/name: uaa
         app.kubernetes.io/instance: uaa-standalone
-        app.kubernetes.io/version: 74.12.0
         app.kubernetes.io/component: authorization_server
         app.kubernetes.io/part-of: gateway-demo
       namespace: demo
@@ -232,7 +232,6 @@ metadata:
     app: uaa-deployment
     app.kubernetes.io/name: uaa
     app.kubernetes.io/instance: uaa-standalone
-    app.kubernetes.io/version: 74.12.0
     app.kubernetes.io/component: authorization_server
     app.kubernetes.io/part-of: gateway-demo
   namespace: demo
@@ -295,13 +294,13 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: uaa
-      app.kuberbetes.io/instance: uaa-standalone
+      app.kubernetes.io/instance: uaa-standalone
       app.kubernetes.io/part-of: gateway-demo
   policyTypes:
   - Ingress
   ingress:
   - from:
-    - podSelector:
+    - podSelector: 
         matchLabels:
           app.kubernetes.io/component: services
           app.kubernetes.io/part-of: gateway-demo
@@ -309,6 +308,11 @@ spec:
         matchLabels:
           app.kubernetes.io/component: gateway
           app.kubernetes.io/part-of: gateway-demo
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: nginx-ingress-controller
+          app.kubernetes.io/part-of: kube-system
     ports:
     - protocol: TCP
       port: 8080
