@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -e
 
-tkg create cluster gateway-demo -f prod -v 6
+tkg create cluster gateway-demo-tkg -f prod -v 6
 kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
 kubectl create namespace cert-manager
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.13.1/cert-manager.yaml
