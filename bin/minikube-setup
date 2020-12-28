@@ -1,8 +1,25 @@
 #! /usr/bin/env bash
 set -e
 
-minikube start --profile gateway-demo --memory 4096 --addons ingress --container-runtime containerd 
+minikube start --profile gateway-demo --cpus 4 --memory 8182 --container-runtime containerd 
 minikube profile gateway-demo
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.3/manifests/metallb.yaml
+MINIKUBE_IP=$(minikube ip)
+kubectl apply -f - <<CONFIG
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - ${MINIKUBE_IP}/28 
+CONFIG
+kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
 kubectl create namespace cert-manager
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.13.1/cert-manager.yaml
 kubectl apply -f https://github.com/pivotal/kpack/releases/download/v0.0.6/release-0.0.6.yaml
